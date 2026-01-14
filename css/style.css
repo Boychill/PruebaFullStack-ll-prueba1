@@ -1,0 +1,25 @@
+/* style.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos para el efecto de scroll suave y transiciones del dropdown */
+.dropdown-content {
+    display: none;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Clases personalizadas por página para organización */
+/* INDEX */
+.product-grid { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6; }
+/* ADMIN */
+.admin-table { @apply min-w-full bg-white border border-gray-200; }
+.admin-table th { @apply px-6 py-3 border-b bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase; }

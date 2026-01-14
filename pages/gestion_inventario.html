@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin | Panel de Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md p-4 mb-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Panel de Administración</h1>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <button onclick="toggleAdminMenu()" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 flex items-center gap-2">
+                        Categorías Admin ▼
+                    </button>
+                    <div id="admin-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-xl z-50 overflow-hidden">
+                        <button onclick="cambiarVista('inventario')" class="block w-full text-left px-4 py-3 hover:bg-blue-50 border-b">📦 Inventario</button>
+                        <button onclick="cambiarVista('pedidos')" class="block w-full text-left px-4 py-3 hover:bg-blue-50">📋 Pedidos Usuarios</button>
+                    </div>
+                </div>
+                <a href="index.html" class="text-gray-500 hover:text-red-500 text-sm font-medium">Salir a Tienda →</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4">
+        <div id="vista-inventario">
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
+                <h2 class="text-xl font-bold mb-4">Agregar / Editar Producto</h2>
+                <form id="form-producto" onsubmit="guardarProducto(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="hidden" id="prod-id">
+                    <input type="text" id="prod-nombre" placeholder="Nombre del producto" class="border p-2 rounded" required>
+                    <select id="prod-categoria" class="border p-2 rounded">
+                        <option value="ropa">Ropa</option>
+                        <option value="tecnologia">Tecnología</option>
+                        <option value="accesorios">Accesorios</option>
+                    </select>
+                    <input type="number" id="prod-precio" placeholder="Precio ($)" class="border p-2 rounded" required>
+                    <input type="number" id="prod-stock" placeholder="Cantidad Stock" class="border p-2 rounded" required>
+                    <input type="text" id="prod-url" placeholder="URL de Imagen (http...)" class="border p-2 rounded">
+                    
+                    <button type="submit" class="bg-green-600 text-white font-bold py-2 rounded hover:bg-green-700 md:col-span-3">Guardar Producto</button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-xl shadow overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="p-4">Img</th>
+                            <th class="p-4">Producto</th>
+                            <th class="p-4">Precio</th>
+                            <th class="p-4">Stock</th>
+                            <th class="p-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-admin-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="vista-pedidos" class="hidden">
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h2 class="text-2xl font-bold mb-6 text-blue-700">📦 Pedidos Recibidos</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Cliente</th>
+                                <th class="p-4">Fecha</th>
+                                <th class="p-4">Total</th>
+                                <th class="p-4">Estado</th>
+                                <th class="p-4">Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-pedidos-admin"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/admin.js"></script>
+    <script src="../js/utils.js"></script>
+</body>
+</html>

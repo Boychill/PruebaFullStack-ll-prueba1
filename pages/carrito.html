@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Carrito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold">Carrito de Compras</h1>
+            <a href="index.html" class="text-blue-600 hover:underline">← Volver</a>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow" id="cart-items"></div>
+            <div class="bg-white p-6 rounded-xl shadow h-fit">
+                <h2 class="text-xl font-bold mb-4">Resumen</h2>
+                <div class="flex justify-between font-bold text-xl mb-6">
+                    <span>Total</span>
+                    <span id="total">$0</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">Confirmar Compra</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/utils.js"></script>
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        const container = document.getElementById('cart-items');
+        
+        function renderCart() {
+            container.innerHTML = carrito.length ? "" : "<p class='text-gray-500'>Tu carrito está vacío.</p>";
+            let total = 0;
+            carrito.forEach((p, index) => {
+                total += parseFloat(p.precio);
+                container.innerHTML += `
+                    <div class="flex items-center justify-between border-b py-4">
+                        <div class="flex items-center gap-4">
+                            <img src="${p.img}" class="w-16 h-16 object-cover rounded">
+                            <div>
+                                <h3 class="font-bold">${p.nombre}</h3>
+                                <p class="text-gray-500 text-sm">$${p.precio}</p>
+                            </div>
+                        </div>
+                        <button onclick="eliminar(${index})" class="text-red-500 font-bold">✕</button>
+                    </div>`;
+            });
+            document.getElementById('total').innerText = `$${total}`;
+            return total;
+        }
+
+        function eliminar(i) {
+            carrito.splice(i, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            renderCart();
+        }
+
+        function checkout() {
+            const user = JSON.parse(localStorage.getItem('usuarioSesion'));
+            if (!user) {
+                mostrarNotificacion("Debes iniciar sesión para comprar", "error");
+                setTimeout(() => window.location.href = 'auth.html', 2000);
+                return;
+            }
+            if (carrito.length === 0) {
+                mostrarNotificacion("Tu carrito está vacío", "error");
+                return;
+            }
+
+            const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+            pedidos.push({
+                id: Date.now(),
+                usuarioEmail: user.email,
+                items: carrito,
+                total: renderCart(),
+                fecha: new Date().toLocaleDateString(),
+                estado: 'Pendiente'
+            });
+            
+            localStorage.setItem('pedidos', JSON.stringify(pedidos));
+            localStorage.setItem('carrito', JSON.stringify([]));
+            
+            mostrarNotificacion("¡Compra realizada con éxito!", "exito");
+            setTimeout(() => window.location.href = 'perfil.html', 2000);
+        }
+        renderCart();
+    </script>
+</body>
+</html>
