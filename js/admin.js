@@ -1,5 +1,3 @@
-// js/admin.js
-
 // --- 1. LÓGICA DE NAVEGACIÓN (Tabs) ---
 function toggleAdminMenu() {
     document.getElementById('admin-dropdown').classList.toggle('hidden');
