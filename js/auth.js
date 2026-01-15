@@ -56,7 +56,7 @@ function manejarLogin(e) {
         const admin = { nombre: 'Super Admin', email, role: 'admin' };
         localStorage.setItem('usuarioSesion', JSON.stringify(admin));
         mostrarNotificacion("Bienvenido Admin", "exito");
-        setTimeout(() => window.location.href = 'index.html', 1000);
+        setTimeout(() => window.location.href = '../index.html', 1000);
         return;
     }
 
@@ -66,7 +66,7 @@ function manejarLogin(e) {
     if (user) {
         localStorage.setItem('usuarioSesion', JSON.stringify(user));
         mostrarNotificacion(`Bienvenido, ${user.nombre}`, "exito");
-        setTimeout(() => window.location.href = 'index.html', 1000);
+        setTimeout(() => window.location.href = '../index.html', 1000);
     } else {
         marcarErrorInput('login-pass');
         mostrarNotificacion("Credenciales incorrectas", "error");
